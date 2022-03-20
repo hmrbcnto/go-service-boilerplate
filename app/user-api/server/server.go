@@ -60,10 +60,10 @@ func (srv *server) ListenAndServe(port string) error {
 	}()
 
 	select {
-	case <-shutdown:
+	case <-serverError:
 		log.Println("error")
 		return fmt.Errorf("server error")
-	case srvErr := <-serverError:
+	case <-shutdown:
 		log.Println("starting graceful server shutdown")
 		defer log.Println("server has shutdown successfully")
 
@@ -75,8 +75,7 @@ func (srv *server) ListenAndServe(port string) error {
 			httpServer.Close()
 			return err
 		}
-
-		<-ctx.Done()
-		return srvErr
 	}
+
+	return nil
 }
