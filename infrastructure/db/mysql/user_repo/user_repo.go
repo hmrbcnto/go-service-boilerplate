@@ -18,13 +18,3 @@ func NewRepo(db *gorm.DB) UserRepo {
 		db: db,
 	}
 }
-
-func (ur *userRepo) CreateUser(user *entities.User) (*entities.User, error) {
-	result := ur.db.Create(user)
-
-	if result.Error != nil {
-		return nil, result.Error
-	}
-
-	return user, result.Error
-}
