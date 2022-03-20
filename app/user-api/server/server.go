@@ -7,6 +7,7 @@ import (
 	"net/http"
 	"os"
 	"os/signal"
+	"syscall"
 	"time"
 
 	"github.com/go-service-boilerplate/infrastructure/db/mysql/user_repo"
@@ -36,7 +37,7 @@ func New(db *gorm.DB) Server {
 func (srv *server) ListenAndServe(port string) error {
 
 	shutdown := make(chan os.Signal, 1)
-	signal.Notify(shutdown)
+	signal.Notify(shutdown, syscall.SIGINT, syscall.SIGTERM)
 
 	serverError := make(chan error, 1)
 
