@@ -5,11 +5,19 @@ import (
 	"os"
 
 	"github.com/go-service-boilerplate/app/user-api/server"
+	"github.com/go-service-boilerplate/config"
 	db "github.com/go-service-boilerplate/infrastructure/db/mysql"
 )
 
 func main() {
-	dbClient, err := db.NewClient()
+	cfg, err := config.LoadConfig()
+
+	if err != nil {
+		log.Println(err)
+		os.Exit(1)
+	}
+
+	dbClient, err := db.NewClient(cfg.DB)
 	if err != nil {
 		log.Println(err)
 		os.Exit(1)
